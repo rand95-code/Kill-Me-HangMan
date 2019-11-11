@@ -115,7 +115,7 @@ namespace HangMan
             mySecrets.Add("superwoman");
             mySecrets.Add("nice");
             mySecrets.Add("powerful");
-            mySecrets.Add("vip");
+            mySecrets.Add("Queen");
 
             int live = 5;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -133,7 +133,7 @@ namespace HangMan
 
                 while (live > 0)
                 {
-                    Console.WriteLine("You have {0} live", live);
+                    // Console.WriteLine("You have {0} live", live);
                     Isletter(secretword, letterGuessed);
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -152,8 +152,60 @@ namespace HangMan
                         GetAlphabet(input);
                         continue;
                     }
+
+
+                    // if word found
+                    letterGuessed.Add(input);
+                    if (IsWord(secretword, letterGuessed))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine(secretword);
+                        Console.WriteLine("Congratulations");
+                        live = 5;
+                        letterGuessed.Clear();
+                        break;
+                    }
+                    // if a letter in word found
+                    else if (secretword.Contains(input))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("wow nice entry");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        string letters = Isletter(secretword, letterGuessed);
+                        Console.Write(letters);
+
+                    }
+                    // when a wrong code is enteredqr
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Oops, letter not in my word");
+                        live -= 1;
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("You have {0} live", live);
+                    }
+                    Console.WriteLine();
+                    // print secret word 
+                    if (live == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Game over");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("My secret Word is [ {0} ]", secretword);
+                        break;
+                    }
+
                 }
+                if (live == 0)
+                {
+                    Console.WriteLine("press Enter key to Exit");
+                    Console.ReadKey();
+                }
+                
+
             }
+
         }
     }
 }
