@@ -112,7 +112,8 @@ namespace HangMan
             mySecrets.Add("queen");
 
             bool endgame = false;
-            int live = 5;
+            int default_live = 10;
+            int live = 10;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to Hangman Game");
 
@@ -138,7 +139,23 @@ namespace HangMan
                     // if letterGuessed contains input
 
 
+                   
 
+                    
+
+                    
+                    // if word found
+                    if ((secretword != input) && (input.Length > 1))
+                    {
+                        Console.WriteLine("Please enter a Single charachter only.");
+
+                    }
+
+                    if (input=="")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Can not accept empty entry!");
+                    }
                     if (letterGuessed.Contains(input))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -149,22 +166,15 @@ namespace HangMan
                         continue;
                     }
 
-
-                    // if word found
                     letterGuessed.Add(input);
-                    if((secretword!=input) && (input.Length > 1)) 
-                    {
-                        Console.WriteLine("Please enter a Single charachter only.");
 
-                    }
-                     
-                    else if ((secretword==input) || (IsWord(secretword, letterGuessed)))
+                    if ((secretword == input) || (IsWord(secretword, letterGuessed)))
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine(secretword);
                         Console.WriteLine("Congratulations");
-                         
-                        live = 5;
+
+                        live = default_live;
                         letterGuessed.Clear();
                         break;
                     }
@@ -219,7 +229,7 @@ namespace HangMan
                     break;
                   
                 }
-                Console.ReadKey();
+                //Console.ReadKey();
 
             }
 
