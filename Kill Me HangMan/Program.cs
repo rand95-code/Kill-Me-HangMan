@@ -95,28 +95,23 @@ namespace HangMan
             Console.WriteLine();
 
         }
-        /* random strings
-        static string randomword(string secretword) 
-        {
-           random rnd = new random();
-
-        }*/
-
-
+       
+      
         static void Main()
         {
             Console.Title = ("HangMan");
 
             // secretWord
 
-
+            Random rnd = new Random();   //random strings  -  The secret word should be randomly chosen from an array of Strings.
             List<string> letterGuessed = new List<string>();
             List<string> mySecrets = new List<string>();
             mySecrets.Add("superwoman");
             mySecrets.Add("nice");
             mySecrets.Add("powerful");
-            mySecrets.Add("Queen");
+            mySecrets.Add("queen");
 
+            bool endgame = false;
             int live = 5;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to Hangman Game");
@@ -124,12 +119,13 @@ namespace HangMan
             // while live is greater than 0
             for (int k = 0; k < mySecrets.Count; k++)
             {
-                string secretword = mySecrets[k];
+                string secretword = mySecrets[rnd.Next(0, mySecrets.Count)];  //random strings 
                 Console.WriteLine("Playing secret word #{0}", k + 1);
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("Guess for a {0} letter Word ", secretword.Length);
                 Console.ForegroundColor = ConsoleColor.Magenta;
-
+                // Create a StringBuilder that expects to hold 10 characters.
+                StringBuilder sb = new StringBuilder("", 10);
 
                 while (live > 0)
                 {
@@ -156,11 +152,18 @@ namespace HangMan
 
                     // if word found
                     letterGuessed.Add(input);
-                    if (IsWord(secretword, letterGuessed))
+                    if((secretword!=input) && (input.Length > 1)) 
+                    {
+                        Console.WriteLine("Please enter a Single charachter only.");
+
+                    }
+                     
+                    else if ((secretword==input) || (IsWord(secretword, letterGuessed)))
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine(secretword);
                         Console.WriteLine("Congratulations");
+                         
                         live = 5;
                         letterGuessed.Clear();
                         break;
@@ -184,6 +187,19 @@ namespace HangMan
                         live -= 1;
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.WriteLine("You have {0} live", live);
+
+                        if (sb.ToString().Contains(input))
+                        {
+                            Console.WriteLine("Letter ( " + input + " ) already guessed !. Try again.");
+                        }
+                        else
+                        {
+                            // Append the incorrect characters to the end of the StringBuilder.
+                            sb.Append(input.ToCharArray());
+                            sb.Append(", ");
+                        }
+                        // Display the number of characters in the StringBuilder and its string.
+                        Console.WriteLine("incorrect chars: {0}", sb);
                     }
                     Console.WriteLine();
                     // print secret word 
@@ -193,16 +209,17 @@ namespace HangMan
                         Console.WriteLine("Game over");
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("My secret Word is [ {0} ]", secretword);
+                        endgame = true;
                         break;
                     }
 
                 }
-                if (live == 0)
+                if (endgame==true)
                 {
-                    Console.WriteLine("press Enter key to Exit");
-                    Console.ReadKey();
+                    break;
+                  
                 }
-                
+                Console.ReadKey();
 
             }
 
